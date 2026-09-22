@@ -1,0 +1,18 @@
+$kind: http-request
+name: Criar Projeto
+method: POST
+url: '{{baseUrl}}/api/projects'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "title": "Meu Projeto",
+      "description": "Descrição do projeto",
+      "repository": "https://github.com/janedoe/meu-projeto",
+      "profileId": "{{profileId}}",
+      "technologyIds": ["{{technologyId}}"]
+    }

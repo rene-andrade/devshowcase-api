@@ -1,0 +1,14 @@
+$kind: http-request
+name: Criar Tecnologia
+method: POST
+url: '{{baseUrl}}/api/technologies'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "TypeScript"
+    }

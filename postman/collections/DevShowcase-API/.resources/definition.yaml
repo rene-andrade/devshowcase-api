@@ -1,0 +1,9 @@
+$kind: collection
+name: DevShowcase API
+variables:
+  - key: baseUrl
+    value: 'https://devshowcase-api-nd6v.onrender.com'
+  - key: profileId
+    value: ''
+  - key: technologyId
+    value: ''

@@ -1,0 +1,7 @@
+workspace:
+  id: 01f0312d-0afc-4d9d-8197-ab087dc9c64d
+cloudResources:
+  collections:
+    ../postman/collections/DevShowcase-API: 58438101-4660cff5-e986-4041-b953-3cb1fdc9bd99
+  globals:
+    ../postman/globals/workspace.globals.yaml: 30053f92-175d-4872-81b4-47199cb283f7

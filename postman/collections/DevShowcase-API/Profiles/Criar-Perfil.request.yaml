@@ -1,0 +1,17 @@
+$kind: http-request
+name: Criar Perfil
+method: POST
+url: '{{baseUrl}}/api/profiles'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Jane Doe",
+      "bio": "Full-stack developer",
+      "githubUrl": "https://github.com/janedoe",
+      "email": "jane@example.com"
+    }

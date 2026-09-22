@@ -1,0 +1,8 @@
+$kind: http-request
+name: Buscar Perfil por ID
+method: GET
+url: '{{baseUrl}}/api/profiles/:id'
+order: 2000
+pathVariables:
+  - key: id
+    value: '{{profileId}}'
