@@ -177,7 +177,7 @@ A API possui um middleware centralizado de erros (`src/server.ts`) que padroniza
 
 O projeto inclui um blueprint (`render.yaml`) pronto para deploy no [Render](https://render.com/):
 
-- **Web Service** (`devshowcase-api`): runtime Node, build via `npm install --include=dev && npx prisma db push --skip-generate && npm run build`, start via `npm run start`, health check em `/api/health`.
+- **Web Service** (`devshowcase-api`): runtime Node, build via `npm install --include=dev && npx prisma db push && npm run build`, start via `npm run start`, health check em `/api/health`.
   - `--include=dev` é necessário porque `NODE_ENV=production` faz o `npm install` ignorar `devDependencies` por padrão — e o build depende de `typescript`, `prisma` e dos pacotes `@types/*` para compilar.
   - `npx prisma db push` sincroniza o schema (`prisma/schema.prisma`) com o banco de produção a cada deploy, criando/atualizando as tabelas automaticamente. O projeto não usa `prisma migrate` (sem pasta `prisma/migrations`), então esse passo é obrigatório — sem ele as tabelas nunca são criadas no banco.
 - **PostgreSQL** (`devshowcase-db`): banco gerenciado, com `DATABASE_URL` injetada automaticamente no serviço web.
