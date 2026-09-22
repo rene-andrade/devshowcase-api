@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/api/profiles"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Renê\",\r
+
+    \    \"bio\": \"Back-end developer\",\r
+
+    \    \"githubUrl\": \"https://github.com/rene-andrade\",\r
+
+    \    \"email\": \"renelerus@gmail.com\"\r
+
+    }"
+order: 3051335870055044
