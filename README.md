@@ -177,7 +177,8 @@ A API possui um middleware centralizado de erros (`src/server.ts`) que padroniza
 
 O projeto inclui um blueprint (`render.yaml`) pronto para deploy no [Render](https://render.com/):
 
-- **Web Service** (`devshowcase-api`): runtime Node, build via `npm install && npm run build`, start via `npm run start`, health check em `/api/health`.
+- **Web Service** (`devshowcase-api`): runtime Node, build via `npm install --include=dev && npm run build`, start via `npm run start`, health check em `/api/health`.
+  - `--include=dev` é necessário porque `NODE_ENV=production` faz o `npm install` ignorar `devDependencies` por padrão — e o build depende de `typescript`, `prisma` e dos pacotes `@types/*` para compilar.
 - **PostgreSQL** (`devshowcase-db`): banco gerenciado, com `DATABASE_URL` injetada automaticamente no serviço web.
 
 Basta conectar o repositório ao Render e aplicar o blueprint.
