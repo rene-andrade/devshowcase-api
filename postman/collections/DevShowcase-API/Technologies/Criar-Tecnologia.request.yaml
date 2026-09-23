@@ -9,5 +9,5 @@ body:
   type: json
   content: |-
     {
-      "name": "Zod"
+      "name": "Typescript"
     }

@@ -12,6 +12,6 @@ body:
       "title": "DevShowcase",
       "description": "Atividade Disciplina Back-end",
       "repository": "https://github.com/rene-andrade/devshowcase-api",
-      "profileId": "a5395076-246d-4e3b-92e6-31e8de50a673",
-      "technologyIds": []
+      "profileId": "01a0ce0e-eed8-7459-a52c-6f75dc2a59b8",
+      "technologyIds": [1,2,3,4]
     }

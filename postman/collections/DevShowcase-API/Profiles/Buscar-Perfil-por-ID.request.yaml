@@ -1,5 +1,5 @@
 $kind: http-request
 name: Buscar Perfil por ID
 method: GET
-url: "{{baseUrl}}/api/profiles/a5395076-246d-4e3b-92e6-31e8de50a673"
+url: "{{baseUrl}}/api/profiles/01a0ce0e-eed8-7459-a52c-6f75dc2a59b8"
 order: 2000
