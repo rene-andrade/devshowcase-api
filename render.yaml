@@ -1,14 +1,13 @@
-databases:
-  - name: devshowcase-db
-    databaseName: devshowcase
-    user: devshowcase_user
-    plan: free
-
+# Blueprint do branch `advanced`: só o web service, sem bloco `databases`.
+# Usa o banco devshowcase-db, que já pertence ao Blueprint do main (backup em render.main.yaml).
 services:
   - type: web
-    name: devshowcase-api
+    name: devshowcase-api-advanced
     runtime: node
     plan: free
+    repo: https://github.com/rene-andrade/devshowcase-api
+    branch: advanced
+    autoDeploy: true
     buildCommand: npm install --include=dev && npx prisma db push && npm run build
     startCommand: npm run start
     healthCheckPath: /api/health
@@ -16,6 +15,4 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: devshowcase-db
-          property: connectionString
+        sync: false

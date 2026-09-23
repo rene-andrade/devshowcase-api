@@ -241,7 +241,7 @@ Um middleware global (`src/middlewares/error-handler.ts`) padroniza todas as res
 
 ## Deploy
 
-O projeto inclui um blueprint (`render.yaml`) pronto para deploy no [Render](https://render.com/):
+O serviço original, que faz deploy a partir do `main`, é definido por um Blueprint do [Render](https://render.com/). Neste branch ele está salvo em `render.main.yaml`; no `main`, é o `render.yaml`.
 
 - **Web Service** (`devshowcase-api`): runtime Node, build via `npm install --include=dev && npx prisma db push && npm run build`, start via `npm run start`, health check em `/api/health`.
   - `--include=dev` é necessário porque `NODE_ENV=production` faz o `npm install` ignorar `devDependencies` por padrão — e o build depende de `typescript`, `prisma` e dos pacotes `@types/*` para compilar.
@@ -252,24 +252,22 @@ Basta conectar o repositório ao Render e aplicar o blueprint.
 
 ### Segundo serviço: branch `advanced`
 
-A versão com feedbacks, upvotes, paginação e Swagger roda num **segundo web service** no Render. Ele faz deploy do branch `advanced` e usa o **mesmo banco** `devshowcase-db`. O serviço do `main` e o `render.yaml` não mudam.
+A versão com feedbacks, upvotes, paginação e Swagger roda num **segundo web service** no Render, `devshowcase-api-advanced`. Ele faz deploy do branch `advanced` e usa o **mesmo banco** `devshowcase-db`. O serviço do `main` não muda.
 
 **Por que dá para usar o mesmo banco:** o schema do `advanced` só **adiciona** as colunas `upvotes` e `averageRating`, ambas com valor padrão. O `prisma db push` aplica isso sem perder dados, e o serviço do `main` ignora colunas que não conhece.
 
-**Configuração no painel do Render:**
+**Blueprints neste branch:**
 
-1. **New → Web Service**, escolha o mesmo repositório do GitHub e o branch **`advanced`**.
-2. **Runtime:** Node.
-   - **Build Command:** `npm install --include=dev && npx prisma db push && npm run build`
-   - **Start Command:** `npm run start`
-3. Em **Settings**:
-   - **Auto-Deploy:** `On Commit`. Cada push no `advanced` gera um novo deploy (deploy contínuo).
-   - **Health Check Path:** `/api/health`.
-4. Em **Environment**, cadastre as variáveis de produção:
-   - `NODE_ENV` = `production`
-   - `DATABASE_URL` = a **Internal Database URL** do `devshowcase-db` (painel do banco → *Connections*)
+| Arquivo | Conteúdo |
+| ------- | -------- |
+| `render.yaml` | Blueprint do `advanced`: só o web service `devshowcase-api-advanced` (`branch: advanced`, `autoDeploy: true`). Não tem bloco `databases`, porque o banco já pertence ao Blueprint do `main`. Se tivesse, o Render criaria um segundo banco. |
+| `render.main.yaml` | Cópia do `render.yaml` do `main` (banco + serviço `devshowcase-api`). **Antes do merge no `main`**, ela deve voltar a ser o `render.yaml`. |
 
-   `PORT` é definido pelo próprio Render.
+**Criando o serviço pelo Blueprint:**
+
+1. No Render: **New → Blueprint**, escolha o repositório, o branch **`advanced`** e o arquivo `render.yaml`.
+2. O Render vai pedir o valor de `DATABASE_URL`, que está com `sync: false`. Cole a **Internal Database URL** do `devshowcase-db` (painel do banco → *Connections*).
+3. Aplique. `NODE_ENV=production` já vem do arquivo e `PORT` é definido pelo próprio Render. Cada push no `advanced` gera um novo deploy (deploy contínuo).
 
 **Credenciais:** nenhuma credencial fica no código. O `.env` está no `.gitignore`, e em produção tudo vem das variáveis de ambiente do serviço. Use a *Internal* Database URL, que só é acessível dentro da rede do Render.
 
