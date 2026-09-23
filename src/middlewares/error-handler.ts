@@ -43,10 +43,14 @@ export const errorHandler = (
       400,
       "Bad Request",
       "Validation failed",
-      err.issues.map((issue) => ({
-        field: issue.path.join(".") || "(root)",
-        message: issue.message,
-      }))
+      err.issues.flatMap((issue) =>
+        issue.code === "unrecognized_keys"
+          ? issue.keys.map((key) => ({
+              field: [...issue.path, key].join("."),
+              message: `Unknown parameter '${key}'`,
+            }))
+          : [{ field: issue.path.join(".") || "(root)", message: issue.message }]
+      )
     );
     return;
   }

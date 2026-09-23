@@ -185,6 +185,8 @@ Em `GET /api/profiles/:id`, um `id` que não seja UUID retorna `400`; um UUID in
 | `page` | Página, a partir de 1 | `1` |
 | `limit` | Itens por página, de 1 a 50 | `10` |
 
+Só esses três parâmetros são aceitos, e os nomes diferenciam maiúsculas de minúsculas. Qualquer outro (por exemplo, `?Technology=ts` ou `?foo`) retorna `400` com `Unknown parameter '<nome>'` em `details`. Parâmetros desconhecidos não são ignorados em silêncio.
+
 Exemplo: `GET /api/projects?technology=typescript&page=1&limit=5`
 
 ```json
