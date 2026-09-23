@@ -17,15 +17,17 @@ model Profile {
 }
 
 model Project {
-  id           Int          @id @default(autoincrement())
-  title        String
-  description  String
-  repository   String
-  profileId    String       @db.Uuid
-  profile      Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  technologies Technology[]
-  feedbacks    Feedback[]
-  createdAt    DateTime     @default(now())
+  id            Int          @id @default(autoincrement())
+  title         String
+  description   String
+  repository    String
+  upvotes       Int          @default(0)
+  averageRating Float        @default(0)
+  profileId     String       @db.Uuid
+  profile       Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  technologies  Technology[]
+  feedbacks     Feedback[]
+  createdAt     DateTime     @default(now())
 }
 
 model Technology {

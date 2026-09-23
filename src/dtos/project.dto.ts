@@ -12,3 +12,16 @@ export const createProjectSchema = z.object({
 });
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
+
+export const listProjectsQuerySchema = z.object({
+  technology: z.string().trim().min(1).optional(),
+  page: z.coerce.number().int().min(1, "page must be >= 1").default(1),
+  limit: z.coerce
+    .number()
+    .int()
+    .min(1, "limit must be between 1 and 50")
+    .max(50, "limit must be between 1 and 50")
+    .default(10),
+});
+
+export type ListProjectsQuery = z.infer<typeof listProjectsQuerySchema>;

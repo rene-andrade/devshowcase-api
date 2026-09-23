@@ -1,0 +1,15 @@
+$kind: http-request
+name: Cadastrar Feedback
+method: POST
+url: "{{baseUrl}}/api/projects/1/feedbacks"
+order: 3000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "author": "Maria Silva",
+      "comment": "Projeto muito bem organizado!",
+      "rating": 5
+    }

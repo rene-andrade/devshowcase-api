@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { createProfileSchema } from "../dtos/profile.dto";
+import { ConflictError, NotFoundError } from "../errors/app-error";
+import { parseUuidParam } from "../utils/params";
 
 export const createProfile = async (
   req: Request,
@@ -16,11 +17,7 @@ export const createProfile = async (
     });
 
     if (existingProfile) {
-      res.status(409).json({
-        error: "Conflict",
-        message: "A profile with this email already exists",
-      });
-      return;
+      throw new ConflictError("A profile with this email already exists");
     }
 
     const profile = await prisma.profile.create({
@@ -39,14 +36,7 @@ export const getProfileById = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const parsedId = z.uuid().safeParse(req.params.id);
-
-    if (!parsedId.success) {
-      res.status(400).json({ error: "Bad Request", message: "Invalid profile ID" });
-      return;
-    }
-
-    const id = parsedId.data;
+    const id = parseUuidParam(req.params.id);
 
     const profile = await prisma.profile.findUnique({
       where: { id },
@@ -61,11 +51,7 @@ export const getProfileById = async (
     });
 
     if (!profile) {
-      res.status(404).json({
-        error: "Not Found",
-        message: `Profile with ID '${id}' was not found`,
-      });
-      return;
+      throw new NotFoundError(`Profile with ID '${id}' was not found`);
     }
 
     res.status(200).json(profile);

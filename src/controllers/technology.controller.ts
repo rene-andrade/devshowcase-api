@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma";
 import { createTechnologySchema } from "../dtos/technology.dto";
+import { ConflictError } from "../errors/app-error";
 
 export const createTechnology = async (
   req: Request,
@@ -15,11 +16,7 @@ export const createTechnology = async (
     });
 
     if (existingTechnology) {
-      res.status(409).json({
-        error: "Conflict",
-        message: `Technology '${validatedData.name}' already exists`,
-      });
-      return;
+      throw new ConflictError(`Technology '${validatedData.name}' already exists`);
     }
 
     const technology = await prisma.technology.create({

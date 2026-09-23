@@ -1,5 +1,5 @@
 $kind: http-request
 name: Listar Projetos
 method: GET
-url: '{{baseUrl}}/api/projects'
+url: '{{baseUrl}}/api/projects?technology=TypeScript&page=1&limit=10'
 order: 2000
