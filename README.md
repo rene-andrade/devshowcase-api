@@ -13,7 +13,7 @@ API RESTful para cadastro e divulgação de perfis de desenvolvedores, seus proj
 
 ## Modelo de Dados
 
-O schema (`prisma/schema.prisma`) define quatro entidades:
+O schema (`prisma/schema.prisma`) define quatro entidades. O `id` de `Profile` é um **UUID v7** (tipo nativo `uuid` do Postgres, ordenável por data de criação); os demais modelos usam `id` **inteiro autoincremento**.
 
 - **Profile**: `id`, `name`, `bio` (opcional), `githubUrl`, `email` (único), `createdAt`. Possui muitos `Project`.
 - **Project**: `id`, `title`, `description`, `repository`, `profileId`, `createdAt`. Pertence a um `Profile` (cascade on delete), relaciona N:N com `Technology` e possui muitos `Feedback`.
@@ -120,6 +120,8 @@ Todas as rotas de negócio são servidas sob o prefixo `/api`.
 - `githubUrl`: obrigatório, precisa ser uma URL válida no formato `https://github.com/<usuario>`.
 - `email`: obrigatório, formato de e-mail válido e único (retorna `409 Conflict` se já cadastrado).
 
+Em `GET /api/profiles/:id`, um `id` que não seja UUID retorna `400`; um UUID inexistente retorna `404`.
+
 ### Technologies
 
 | Método | Rota                | Descrição                              |
@@ -151,15 +153,15 @@ Todas as rotas de negócio são servidas sob o prefixo `/api`.
   "title": "DevShowcase API",
   "description": "API RESTful para divulgação de projetos",
   "repository": "https://github.com/janedoe/devshowcase-api",
-  "profileId": "b3f1c2e4-...-uuid",
-  "technologyIds": ["a1b2c3d4-...-uuid"]
+  "profileId": "01992f4a-8c3e-7b21-9d4f-3a6e5c1b2d7f",
+  "technologyIds": [1, 2]
 }
 ```
 
 - `title` / `description`: obrigatórios, não vazios.
 - `repository`: obrigatório, URL válida.
 - `profileId`: obrigatório, UUID de um perfil existente (retorna `404` se não encontrado).
-- `technologyIds`: opcional, array de UUIDs de tecnologias existentes (retorna `400` se algum ID não existir).
+- `technologyIds`: opcional, array de ids inteiros de tecnologias existentes (retorna `400` se algum ID não existir).
 
 ## Tratamento de Erros
 

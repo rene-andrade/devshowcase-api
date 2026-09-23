@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { z } from "zod";
 import { prisma } from "../lib/prisma";
 import { createProfileSchema } from "../dtos/profile.dto";
 
@@ -38,12 +39,14 @@ export const getProfileById = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
+    const parsedId = z.uuid().safeParse(req.params.id);
 
-    if (!id || typeof id !== "string") {
-      res.status(400).json({ error: "Bad Request", message: "Profile ID is required" });
+    if (!parsedId.success) {
+      res.status(400).json({ error: "Bad Request", message: "Invalid profile ID" });
       return;
     }
+
+    const id = parsedId.data;
 
     const profile = await prisma.profile.findUnique({
       where: { id },

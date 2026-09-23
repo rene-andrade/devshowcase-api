@@ -7,7 +7,7 @@ datasource db {
 }
 
 model Profile {
-  id        String    @id @default(uuid())
+  id        String    @id @default(uuid(7)) @db.Uuid
   name      String
   bio       String?
   githubUrl String
@@ -17,11 +17,11 @@ model Profile {
 }
 
 model Project {
-  id           String       @id @default(uuid())
+  id           Int          @id @default(autoincrement())
   title        String
   description  String
   repository   String
-  profileId    String
+  profileId    String       @db.Uuid
   profile      Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
   technologies Technology[]
   feedbacks    Feedback[]
@@ -29,17 +29,17 @@ model Project {
 }
 
 model Technology {
-  id       String    @id @default(uuid())
+  id       Int       @id @default(autoincrement())
   name     String    @unique
   projects Project[]
 }
 
 model Feedback {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   author    String
   comment   String
   rating    Int
-  projectId String
+  projectId Int
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
